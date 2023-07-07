@@ -11,6 +11,106 @@
     {
       "name": "mainability_HelloWorld",
       "value": "你好，世界"
+    },
+    {
+      "name": "RenameText",
+      "value": "重命名"
+    },
+    {
+      "name": "DeleteFileText",
+      "value": "删除"
+    },
+    {
+      "name": "SetUsedKeyText",
+      "value": "设为使用的密钥"
+    },
+    {
+      "name": "app_name",
+      "value": "JavaIM"
+    },
+    {
+      "name": "SettingActivityLabel",
+      "value": "JavaIMSetting"
+    },
+    {
+      "name": "IPAddress",
+      "value": "请输入您连接的服务器IP地址："
+    },
+    {
+      "name": "Port",
+      "value": "请输入服务器的端口："
+    },
+    {
+      "name": "ConnectButton",
+      "value": "连接"
+    },
+    {
+      "name": "UserInput",
+      "value": "请输入文本："
+    },
+    {
+      "name": "Disconnected",
+      "value": "连接被关闭"
+    },
+    {
+      "name": "Error1",
+      "value": "IP地址为空，为不可接受内容"
+    },
+    {
+      "name": "Error2",
+      "value": "端口数据不正确！应该为1至65535中的任何数字！"
+    },
+    {
+      "name": "Error3",
+      "value": "发生异常IOException"
+    },
+    {
+      "name": "Error5",
+      "value": "错误，未找到服务端公钥文件，请重新导入服务端公钥！"
+    },
+    {
+      "name": "Error6",
+      "value": "错误，未连接到任何服务器"
+    },
+    {
+      "name": "SendButton",
+      "value": "发送"
+    },
+    {
+      "name": "DisconnectButton",
+      "value": "关闭连接"
+    },
+    {
+      "name": "ChangeToSettingActivity",
+      "value": "前往设置页面"
+    },
+    {
+      "name": "SaveIpAddressChangeAndSavePortChange",
+      "value": "保存并退出"
+    },
+    {
+      "name": "ClearSocketDisplay",
+      "value": "清屏"
+    },
+    {
+      "name": "ImportServerPublicKey",
+      "value": "导入服务端公钥"
+    },
+    {
+      "name": "ManageImportedServerPublicKey",
+      "value": "管理已导入的服务端公钥"
+    },
+    {
+      "name": "UsedKeyPrefix",
+      "value": "正在使用的公钥："
+    },
+    {
+      "name": "UsedKeySuffix",
+      "value": "，可在设置中修改"
+    },
+    {
+      "name": "FileControlActivityLabel",
+      "value": "JavaIMFileControl"
     }
   ]
 }

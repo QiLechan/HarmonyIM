@@ -7,12 +7,12 @@
     ohos:orientation="vertical">
 
     <Text
-        ohos:id="$+id:text_helloworld"
+        ohos:id="$+id:text_tips1"
         ohos:height="match_content"
         ohos:width="match_content"
         ohos:background_element="$graphic:background_ability_main"
         ohos:layout_alignment="horizontal_center"
-        ohos:text="$string:mainability_HelloWorld"
+        ohos:text="$string:UserInput"
         ohos:text_size="40vp"
         />
 
