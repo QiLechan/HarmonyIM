@@ -1,19 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<DirectionalLayout
+<LinearLayout
     xmlns:ohos="http://schemas.huawei.com/res/ohos"
     ohos:height="match_parent"
     ohos:width="match_parent"
     ohos:alignment="center"
     ohos:orientation="vertical">
 
-    <Text
-        ohos:id="$+id:text_tips1"
-        ohos:height="match_content"
-        ohos:width="match_content"
-        ohos:background_element="$graphic:background_ability_main"
-        ohos:layout_alignment="horizontal_center"
+    <TextView
+        ohos:id="@+id/tips1"
+        ohos:layout_width="wrap_content"
+        ohos:layout_height="wrap_content"
+        ohos:layout_marginStart="16dp"
+        ohos:layout_marginTop="220dp"
         ohos:text="$string:UserInput"
-        ohos:text_size="40vp"
-        />
+        ohos:layout_constraintStart_toStartOf="parent"
+        ohos:layout_constraintTop_toTopOf="parent" />
+    
+    <TextView
+        ohos:id="@+id/ChatLog"
+        ohos:layout_width="409dp"
+        ohos:layout_height="133dp"
+        ohos:layout_marginStart="1dp"
+        ohos:layout_marginTop="72dp"
+        ohos:maxLines="3000000"
+        ohos:scrollbars="vertical"
+        ohos:singleLine="false"
+        ohos:layout_constraintStart_toStartOf="parent"
+        ohos:layout_constraintTop_toTopOf="parent" />
 
-</DirectionalLayout>
+    <EditText
+        ohos:id="@+id/UserSendMessage"
+        ohos:layout_width="182dp"
+        ohos:layout_height="48dp"
+        ohos:layout_marginStart="16dp"
+        ohos:layout_marginTop="204dp"
+        ohos:autofillHints=""
+        ohos:ems="10"
+        ohos:inputType="textPersonName"
+        ohos:layout_constraintStart_toEndOf="@+id/tips1"
+        ohos:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        ohos:id="$+id:button2"
+        ohos:layout_width="wrap_content"
+        ohos:layout_height="wrap_content"
+        ohos:layout_marginStart="16dp"
+        ohos:layout_marginTop="272dp"
+        ohos:text="$string:ConnectButton"
+        ohos:layout_constraintStart_toStartOf="parent"
+        ohos:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        ohos:id="$+id:button4"
+        ohos:layout_width="wrap_content"
+        ohos:layout_height="wrap_content"
+        ohos:layout_marginStart="16dp"
+        ohos:layout_marginTop="272dp"
+        ohos:text="$string:ChangeToSettingActivity"
+        ohos:layout_constraintEnd_toStartOf="@+id/button3"
+        ohos:layout_constraintHorizontal_bias="0.23"
+        ohos:layout_constraintStart_toEndOf="@+id/button2"
+        ohos:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        ohos:id="$+id:button3"
+        ohos:layout_width="wrap_content"
+        ohos:layout_height="wrap_content"
+        ohos:layout_marginStart="192dp"
+        ohos:layout_marginTop="272dp"
+        ohos:text="$string:DisconnectButton"
+        ohos:layout_constraintStart_toEndOf="@+id/button2"
+        ohos:layout_constraintTop_toTopOf="parent" />
+
+    <Group
+        ohos:id="@+id/group"
+        ohos:layout_width="wrap_content"
+        ohos:layout_height="wrap_content"
+        ohos:constraint_referenced_ids="button2" />
+
+    <Button
+        ohos:id="$+id:button6"
+        ohos:layout_width="wrap_content"
+        ohos:layout_height="wrap_content"
+        ohos:layout_marginStart="148dp"
+        ohos:layout_marginTop="140dp"
+        ohos:text="$string:ClearSocketDisplay"
+        ohos:layout_constraintStart_toStartOf="parent"
+        ohos:layout_constraintTop_toBottomOf="@+id/button4" />
+
+    <TextView
+        ohos:id="@+id/DisplayUsedKey"
+        ohos:layout_width="wrap_content"
+        ohos:layout_height="wrap_content"
+        ohos:layout_marginStart="22dp"
+        ohos:layout_marginTop="372dp"
+        ohos:text="$string:UsedKeyPrefix"
+        ohos:layout_constraintStart_toStartOf="parent"
+        ohos:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        ohos:id="$+id:button8"
+        ohos:layout_width="wrap_content"
+        ohos:layout_height="wrap_content"
+        ohos:layout_marginStart="307dp"
+        ohos:layout_marginTop="205dp"
+        ohos:text="$string:SendButton"
+        ohos:layout_constraintStart_toStartOf="parent"
+        ohos:layout_constraintTop_toTopOf="parent" />
+</LinearLayout>
