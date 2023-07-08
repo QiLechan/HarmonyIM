@@ -42,6 +42,18 @@
         "orientation": "unspecified",
         "visible": true,
         "type": "page"
+      },
+      {
+        "name": "com.yuezhikong.harmonyim.SettingActivity",
+        "icon": "",
+        "description": "",
+        "type": "page"
+      },
+      {
+        "name": "com.yuezhikong.harmonyim.SettingActivity.File_Control_Activity",
+        "icon": "",
+        "description": "",
+        "type": "page"
       }
     ]
   }

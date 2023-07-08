@@ -2,19 +2,14 @@ package com.yuezhikong.harmonyim.Encryption;
 
 import java.util.Base64;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
+import com.yuezhikong.harmonyim.utils.FileUtils;
+
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.security.KeyPair;
 import java.security.PrivateKey;
 
 import cn.hutool.crypto.SecureUtil;
 import cn.hutool.crypto.asymmetric.KeyType;
-import com.yuezhikong.harmonyim.utils.FileUtils;
 
 public class RSA {
     public static KeyData loadPublicKeyFromFile(String filePath)
@@ -43,7 +38,7 @@ public class RSA {
     public static String encrypt(String Message, String PublicKey)
     {
         cn.hutool.crypto.asymmetric.RSA rsa = new cn.hutool.crypto.asymmetric.RSA(null,PublicKey);
-        return Base64.encodeToString(rsa.encrypt(Message, KeyType.PublicKey),Base64.NO_WRAP);
+        return Base64.getEncoder().encodeToString(rsa.encrypt(Message, KeyType.PublicKey));
     }
 
     public static String decrypt(String message, PrivateKey privateKey) {

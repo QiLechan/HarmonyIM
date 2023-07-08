@@ -16,7 +16,12 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import ohos.aafwk.ability.Ability;
+import ohos.aafwk.ability.AbilitySlice;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -28,19 +33,19 @@ import java.util.Locale;
 import java.util.UUID;
 
 
-public class SettingActivity extends Activity {
-    private final String LogHead = "JavaIM";
-    public static class File_Control_Activity extends Activity {
+public class SettingActivity extends Ability {
+    private final String LogHead = "HarmonyIM";
+    public static class File_Control_Activity extends Ability {
         private String SelectedFileName = "";
         private String FileControlMode = "";
         @Override
-        protected void onCreate(@Nullable Bundle savedInstanceState) {
+        protected void onCreate(@Nullable AbilitySlice savedInstanceState) {
             //Super类调用
-            super.onCreate(savedInstanceState);
+            super.onStart(savedInstanceState);
             //设置显示界面
-            setContentView(R.layout.control_file_activity);
+            setUIContent(ResourceTable.Layout_control_file_activity);
             //开始读取bundle，执行填充
-            Bundle bundle = this.getIntent().getExtras();
+            AbilitySlice bundle = this.getIntent().getExtras();
             String[] FileNames = bundle.getStringArray("FileNames");
             Spinner FileNameSpinner = findViewById(R.id.spinner);
             FileNameSpinner.setAdapter(new ArrayAdapter<CharSequence>(this,
@@ -78,13 +83,18 @@ public class SettingActivity extends Activity {
         }
         private void onApplyChange()
         {
-            if (SelectedFileName.equals(""))
+            if ("".equals(SelectedFileName))
             {
                 Toast.makeText(File_Control_Activity.this,"文件名不能为空",Toast.LENGTH_LONG).show();
                 return;
             }
             File file = new File(getFilesDir().getPath()+"/"+SelectedFileName);
-            if (FileControlMode.equals(getResources().getString(R.string.RenameText)))
+            if (MainActivity.UsedKey != null && file.getName().equals(MainActivity.UsedKey.getName()) && MainActivity.isSession())
+            {
+                Toast.makeText(File_Control_Activity.this,"此文件正在使用中",Toast.LENGTH_LONG).show();
+                return;
+            }
+            if (getResources().getString(R.string.RenameText).equals(FileControlMode))
             {
                 for (String Filename : fileList())
                 {
@@ -103,7 +113,7 @@ public class SettingActivity extends Activity {
                     MainActivity.UsedKey = new File(getFilesDir().getPath()+"/"+((EditText)findViewById(R.id.RenameFileText)).getText().toString());
                 }
             }
-            else if (FileControlMode.equals(getResources().getString(R.string.DeleteFileText)))
+            else if (getResources().getString(R.string.DeleteFileText).equals(FileControlMode))
             {
                 if (!file.delete())
                 {
@@ -121,12 +131,13 @@ public class SettingActivity extends Activity {
                     }
                 }
             }
-            else if (FileControlMode.equals(getResources().getString(R.string.SetUsedKeyText)))
+            else if (getResources().getString(R.string.SetUsedKeyText).equals(FileControlMode))
             {
                 MainActivity.UsedKey = file;
             }
         }
     }
+    private ActivityResultLauncher<Intent> StorageAccessFrameworkResultLauncher;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         //Super类调用
@@ -148,13 +159,51 @@ public class SettingActivity extends Activity {
         //正在处理注册
         Button button = findViewById(R.id.button5);
         button.setOnClickListener(this::OnSaveChange);
-        //完成1/3（保存与退出注册）
+        //完成1/4（保存与退出注册）
         button = findViewById(R.id.button9);
         button.setOnClickListener(this::OnImportPublicKey);
-        //完成2/3（导入服务端公钥注册）
+        //完成2/4（导入服务端公钥注册）
         button = findViewById(R.id.button10);
         button.setOnClickListener(this::OnManagePublicKey);
-        //注册完成
+        //完成3/4（服务端公钥管理器注册）
+        StorageAccessFrameworkResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if (result.getResultCode() != Activity.RESULT_OK) {
+                return;
+            }
+            {
+                Uri FileURI = null;
+                if (result.getData() != null) {
+                    FileURI = result.getData().getData();
+                }
+                Log.d(LogHead, "获取到的URI是：" + FileURI);
+                String DisplayName = GetURIDisplayName(FileURI);
+                if (DisplayName == null) {
+                    DisplayName = "RandomKeyName" + UUID.randomUUID() + UUID.randomUUID() + ".txt";
+                }
+                Uri finalFileURI = FileURI;
+                String finalDisplayName = DisplayName;
+                Toast.makeText(SettingActivity.this, "文件名为：" + DisplayName, Toast.LENGTH_LONG).show();
+                new Thread() {
+                    @Override
+                    public void run() {
+                        this.setName("I/O Thread");
+                        try (BufferedReader FileInput = new BufferedReader(new InputStreamReader(getContentResolver().openInputStream(finalFileURI))); BufferedWriter FileOutput = new BufferedWriter(new OutputStreamWriter(openFileOutput(finalDisplayName, MODE_PRIVATE)))) {
+                            String line;
+                            while ((line = FileInput.readLine()) != null) {
+                                FileOutput.write(line);
+                                FileOutput.newLine();//line是纯文本，没有回车，需要补上
+                            }
+                            //写入完毕，将此文件设为使用
+                            MainActivity.UsedKey = new File(getFilesDir().getPath() + "/" + finalDisplayName);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }.start();
+            }
+        });
+        // 开始注册StorageAccessFrameworkResultLauncher
+        ///注册完成
     }
     public void OnSaveChange(View view) {
         //开始获取新ServerAddr和新ServerPort
@@ -176,7 +225,7 @@ public class SettingActivity extends Activity {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("text/plain");
-        startActivityForResult(intent,1);
+        StorageAccessFrameworkResultLauncher.launch(intent);
     }
     private String GetURIDisplayName(Uri uri)
     {
@@ -201,46 +250,6 @@ public class SettingActivity extends Activity {
             }
         }
         return null;
-    }
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode != Activity.RESULT_OK) {
-            return;
-        }
-        //RequestCode = 1时，说明是导入文件
-        if (requestCode == 1) {
-            Uri FileURI = null;
-            if (data != null) {
-                FileURI = data.getData();
-            }
-            Log.d(LogHead,"获取到的URI是："+FileURI);
-            String DisplayName = GetURIDisplayName(FileURI);
-            if (DisplayName == null)
-            {
-                DisplayName = "RandomKeyName"+ UUID.randomUUID() + UUID.randomUUID() +".txt";
-            }
-            Uri finalFileURI = FileURI;
-            String finalDisplayName = DisplayName;
-            Toast.makeText(SettingActivity.this,"文件名为："+DisplayName,Toast.LENGTH_LONG).show();
-            new Thread()
-            {
-                @Override
-                public void run() {
-                    this.setName("I/O Thread");
-                    try (BufferedReader FileInput = new BufferedReader(new InputStreamReader(getContentResolver().openInputStream(finalFileURI))); BufferedWriter FileOutput = new BufferedWriter(new OutputStreamWriter(openFileOutput(finalDisplayName, MODE_PRIVATE)))) {
-                        String line;
-                        while ((line = FileInput.readLine()) != null) {
-                            FileOutput.write(line);
-                            FileOutput.newLine();//line是纯文本，没有回车，需要补上
-                        }
-                        //写入完毕，将此文件设为使用
-                        MainActivity.UsedKey = new File(getFilesDir().getPath()+"/"+finalDisplayName);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }.start();
-        }
     }
 
     public void OnManagePublicKey(View v)
