@@ -15,18 +15,6 @@
         ohos:text="$string:UserInput"
         ohos:layout_constraintStart_toStartOf="parent"
         ohos:layout_constraintTop_toTopOf="parent" />
-    
-    <TextView
-        ohos:id="@+id/ChatLog"
-        ohos:layout_width="409dp"
-        ohos:layout_height="133dp"
-        ohos:layout_marginStart="1dp"
-        ohos:layout_marginTop="72dp"
-        ohos:maxLines="3000000"
-        ohos:scrollbars="vertical"
-        ohos:singleLine="false"
-        ohos:layout_constraintStart_toStartOf="parent"
-        ohos:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         ohos:id="@+id/UserSendMessage"
@@ -107,4 +95,45 @@
         ohos:text="$string:SendButton"
         ohos:layout_constraintStart_toStartOf="parent"
         ohos:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+        ohos:id="$+id:ScrollView"
+        ohos:layout_width="406dp"
+        ohos:layout_height="129dp"
+        ohos:layout_marginStart="1dp"
+        ohos:layout_marginTop="4dp"
+        ohos:layout_constraintStart_toStartOf="parent"
+        ohos:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            ohos:layout_width="match_parent"
+            ohos:layout_height="wrap_content"
+            ohos:orientation="vertical">
+
+            <TextView
+                ohos:id="@+id/ChatLog"
+                ohos:layout_width="409dp"
+                ohos:layout_height="133dp" />
+        </LinearLayout>
+    </ScrollView>
+
+    <Toolbar
+        ohos:id="@+id/toolbar"
+        ohos:layout_width="0dp"
+        ohos:layout_height="0dp"
+        ohos:minHeight="?attr/actionBarSize"
+        ohos:theme="?attr/actionBarTheme"
+        ohos:layout_constraintStart_toStartOf="parent"
+        ohos:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        ohos:id="$+id:debugbutton"
+        ohos:layout_width="wrap_content"
+        ohos:layout_height="wrap_content"
+        ohos:layout_marginStart="262dp"
+        ohos:layout_marginTop="462dp"
+        ohos:text="Debug"
+        ohos:layout_constraintStart_toStartOf="parent"
+        ohos:layout_constraintTop_toTopOf="parent" />
+
 </LinearLayout>
